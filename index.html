@@ -194,6 +194,9 @@ button:hover{
 </head>
 
 <body>
+  <audio id="birthdaySong" loop>
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
 
 <!-- PASSWORD SCREEN -->
 <section id="password" class="screen active">
@@ -394,7 +397,6 @@ function show(id){
   window.scrollTo(0,0);
 }
 
-
 function unlock(){
 
   const value =
@@ -406,6 +408,12 @@ function unlock(){
 
   if(value === PASSWORD){
 
+    // Start the birthday song
+    const song = document.getElementById('birthdaySong');
+    song.volume = 0.5;
+    song.play();
+
+    // Go to the next screen
     show('hello');
 
   }else{
