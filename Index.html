@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Yara ❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Dancing+Script:wght@500;600;700&display=swap');
+
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:'Baloo 2',sans-serif;
+  background:linear-gradient(135deg,#ffd9e7,#fff2f7);
+  color:#6d2748;
+  overflow-x:hidden
+}
+
+.screen{
+  min-height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px
+}
+
+.screen.active{
+  display:flex
+}
+
+.card{
+  width:min(92vw,520px);
+  padding:34px 25px;
+  text-align:center;
+  background:rgba(255,255,255,.88);
+  border-radius:32px;
+  box-shadow:0 20px 60px rgba(120,35,75,.18);
+  border:2px solid #fff
+}
+
+h1{
+  font-size:clamp(42px,12vw,70px);
+  margin:0 0 4px;
+  color:#c83f72
+}
+
+h2{
+  font-size:32px;
+  margin:4px 0 14px;
+  color:#bd3f6e
+}
+
+.script{
+  font-family:'Dancing Script',cursive;
+  font-size:35px;
+  line-height:1.15
+}
+
+.sub{
+  font-size:20px;
+  margin:10px 0 24px
+}
+
+input{
+  width:100%;
+  padding:16px;
+  border:2px solid #ef9fba;
+  border-radius:18px;
+  font-size:18px;
+  text-align:center;
+  outline:none
+}
+
+button{
+  border:0;
+  border-radius:999px;
+  padding:14px 28px;
+  margin:8px;
+  font:600 20px 'Baloo 2';
+  cursor:pointer;
+  background:#d64c7e;
+  color:white;
+  box-shadow:0 8px 18px rgba(214,76,126,.25);
+  transition:.2s
+}
+
+button:hover{
+  transform:translateY(-2px) scale(1.02)
+}
+
+.secondary{
+  background:#f3a5bd;
+  color:#7b3150
+}
+
+.puppy{
+  font-size:100px;
+  animation:bounce 1.6s infinite
+}
+
+@keyframes bounce{
+  50%{
+    transform:translateY(-10px) rotate(2deg)
+  }
+}
+
+.shake{
+  animation:shake .4s
+}
+
+@keyframes shake{
+  25%{
+    transform:translateX(-8px)
+  }
+  50%{
+    transform:translateX(8px)
+  }
+  75%{
+    transform:translateX(-5px)
+  }
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin:20px 0
+}
+
+.photo{
+  height:190px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#ffd3e1;
+  border:3px solid white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:50px
+}
+
+.photo img{
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+
+.wish{
+  font-size:21px;
+  line-height:1.55
+}
+
+.heart{
+  position:fixed;
+  bottom:-30px;
+  animation:float 5s linear forwards;
+  pointer-events:none
+}
+
+@keyframes float{
+  to{
+    transform:translateY(-110vh) rotate(30deg);
+    opacity:0
+  }
+}
+
+.confetti{
+  position:fixed;
+  top:-20px;
+  width:9px;
+  height:16px;
+  animation:fall 3s linear forwards;
+  pointer-events:none
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(720deg);
+    opacity:.2
+  }
+}
+
+.small{
+  font-size:14px;
+  opacity:.65;
+  margin-top:16px
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD SCREEN -->
+<section id="password" class="screen active">
+  <div class="card">
+
+    <div class="puppy">🔐</div>
+
+    <h2>Secret Birthday Surprise</h2>
+
+    <p class="sub">
+      Enter the password to unlock Yara's surprise 💌
+    </p>
+
+    <input
+      id="pass"
+      type="password"
+      placeholder="Enter password"
+    >
+
+    <button onclick="unlock()">
+      Unlock ❤️
+    </button>
+
+    <p id="error" class="small"></p>
+
+  </div>
+</section>
+
+
+<!-- HELLO SCREEN -->
+<section id="hello" class="screen">
+  <div class="card">
+
+    <div class="puppy">🐶🌹</div>
+
+    <h1>HEY YARA!!</h1>
+
+    <div class="script">
+      I made something special for you...
+    </div>
+
+    <p class="sub">
+      Do you want to see your birthday surprise? 🥺💗
+    </p>
+
+    <button onclick="show('good')">
+      YES 💕
+    </button>
+
+    <button class="secondary" onclick="show('no')">
+      NO 🙄
+    </button>
+
+  </div>
+</section>
+
+
+<!-- NO SCREEN -->
+<section id="no" class="screen">
+  <div class="card">
+
+    <div class="puppy">😤🐶</div>
+
+    <h1>HOW DARE YOU!</h1>
+
+    <p class="sub">
+      Yara, you can't say no to a birthday surprise 😭❤️
+    </p>
+
+    <button onclick="show('hello')">
+      Go back 💗
+    </button>
+
+  </div>
+</section>
+
+
+<!-- GOOD SCREEN -->
+<section id="good" class="screen">
+  <div class="card">
+
+    <div class="puppy">🥰🐶</div>
+
+    <h2>That's my good girl!! 🌻</h2>
+
+    <p class="script">
+      Okay... now click the button 👀
+    </p>
+
+    <button onclick="show('surprise'); confetti()">
+      CLICK 🎁
+    </button>
+
+  </div>
+</section>
+
+
+<!-- SURPRISE SCREEN -->
+<section id="surprise" class="screen">
+  <div class="card">
+
+    <div class="puppy">🎂💗</div>
+
+    <h1>Happy Birthday, Yara! 🎉</h1>
+
+    <div class="script">
+      To the cutest person ever...
+    </div>
+
+    <p class="wish">
+
+      I hope your birthday is filled with the same warmth,
+      happiness and love that you bring into my life.
+      You deserve every beautiful thing in this world,
+      every reason to smile, and a thousand little moments
+      that make your heart happy. ❤️
+
+      <br><br>
+
+      Keep being your adorable, amazing self, Yara.
+      I’m so lucky to have you and I hope this new year
+      of your life is your happiest one yet. 🥹💗
+
+      <br><br>
+
+      <b>Happy Birthday, beautiful! 🌷🎂</b>
+
+    </p>
+
+
+    <h2>Our little memories 📸</h2>
+
+    <div class="gallery">
+
+      <div class="photo">
+        <img
+          src="photos/photo1.jpg"
+          onerror="this.style.display='none';this.parentElement.innerHTML='📷'"
+        >
+      </div>
+
+      <div class="photo">
+        <img
+          src="photos/photo2.jpg"
+          onerror="this.style.display='none';this.parentElement.innerHTML='💞'"
+        >
+      </div>
+
+      <div class="photo">
+        <img
+          src="photos/photo3.jpg"
+          onerror="this.style.display='none';this.parentElement.innerHTML='🥰'"
+        >
+      </div>
+
+      <div class="photo">
+        <img
+          src="photos/photo4.jpg"
+          onerror="this.style.display='none';this.parentElement.innerHTML='🌸'"
+        >
+      </div>
+
+    </div>
+
+
+    <p class="script">
+      One more thing...
+    </p>
+
+    <p class="wish">
+      <b>Whatever happens, I’ll always be cheering for you. ❤️</b>
+    </p>
+
+    <button onclick="hearts()">
+      Send Yara some love 💕
+    </button>
+
+  </div>
+</section>
+
+
+<script>
+
+const PASSWORD = "yara";
+// Change "yara" to your secret password
+
+
+function show(id){
+
+  document
+    .querySelectorAll('.screen')
+    .forEach(s => s.classList.remove('active'));
+
+  document
+    .getElementById(id)
+    .classList.add('active');
+
+  window.scrollTo(0,0);
+}
+
+
+function unlock(){
+
+  const value =
+    document
+      .getElementById('pass')
+      .value
+      .trim()
+      .toLowerCase();
+
+  if(value === PASSWORD){
+
+    show('hello');
+
+  }else{
+
+    const card =
+      document.querySelector('#password .card');
+
+    card.classList.remove('shake');
+
+    void card.offsetWidth;
+
+    card.classList.add('shake');
+
+    document.getElementById('error').textContent =
+      "Hmm... that's not the secret password 😏";
+  }
+}
+
+
+document
+  .getElementById('pass')
+  .addEventListener('keydown', e => {
+
+    if(e.key === 'Enter'){
+      unlock();
+    }
+
+  });
+
+
+function hearts(){
+
+  for(let i = 0; i < 28; i++){
+
+    const x = document.createElement('div');
+
+    x.className = 'heart';
+
+    x.textContent =
+      ['❤️','💗','💕','💖','🌸']
+      [Math.floor(Math.random() * 5)];
+
+    x.style.left =
+      Math.random() * 100 + 'vw';
+
+    x.style.fontSize =
+      (18 + Math.random() * 24) + 'px';
+
+    x.style.animationDelay =
+      (Math.random() * 1.2) + 's';
+
+    document.body.appendChild(x);
+
+    setTimeout(() => x.remove(), 6500);
+  }
+}
+
+
+function confetti(){
+
+  for(let i = 0; i < 70; i++){
+
+    const x = document.createElement('div');
+
+    x.className = 'confetti';
+
+    x.textContent =
+      ['💗','✨','🎀','🌸','⭐']
+      [Math.floor(Math.random() * 5)];
+
+    x.style.left =
+      Math.random() * 100 + 'vw';
+
+    x.style.fontSize =
+      (12 + Math.random() * 18) + 'px';
+
+    x.style.animationDelay =
+      (Math.random() * 1.5) + 's';
+
+    document.body.appendChild(x);
+
+    setTimeout(() => x.remove(), 5000);
+  }
+}
+
+</script>
+
+</body>
+</html>
